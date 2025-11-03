@@ -22,11 +22,20 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Finance Emission Service", version="0.1.0")
 
-# Allow local dev from typical ports; tighten in prod
+# CORS configuration: explicit origins to support credentials and avoid "*" with cookies
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://www.rethinkcarbon.io",
+    "https://rethinkcarbon.io",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["*"],  # public API; no cookies are used
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
